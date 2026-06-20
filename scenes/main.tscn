@@ -22,6 +22,10 @@ color = Color(0.0352941, 0.0470588, 0.12549, 1)
 
 [node name="EnemyProjectiles" type="Node2D" parent="."]
 
+[node name="Explosions" type="Node2D" parent="."]
+
+[node name="PowerUps" type="Node2D" parent="."]
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="ScoreLabel" type="Label" parent="HUD"]
@@ -31,9 +35,62 @@ offset_right = 250.0
 offset_bottom = 38.0
 text = "Score: 0"
 
+[node name="LivesLabel" type="Label" parent="HUD"]
+offset_left = 16.0
+offset_top = 72.0
+offset_right = 132.0
+offset_bottom = 98.0
+text = "Lives"
+
+[node name="LifeBar1" type="ProgressBar" parent="HUD"]
+offset_left = 76.0
+offset_top = 74.0
+offset_right = 176.0
+offset_bottom = 94.0
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="LifeBar2" type="ProgressBar" parent="HUD"]
+offset_left = 184.0
+offset_top = 74.0
+offset_right = 284.0
+offset_bottom = 94.0
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="LifeBar3" type="ProgressBar" parent="HUD"]
+offset_left = 292.0
+offset_top = 74.0
+offset_right = 392.0
+offset_bottom = 94.0
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="LevelLabel" type="Label" parent="HUD"]
+offset_left = 840.0
+offset_top = 12.0
+offset_right = 1008.0
+offset_bottom = 38.0
+horizontal_alignment = 2
+text = "Level: 1"
+
 [node name="StatusLabel" type="Label" parent="HUD"]
 offset_left = 16.0
 offset_top = 40.0
 offset_right = 560.0
 offset_bottom = 72.0
 text = "Move mouse to steer. Right click to shoot."
+
+[node name="BossWarningLabel" type="Label" parent="HUD"]
+visible = false
+offset_left = 268.0
+offset_top = 20.0
+offset_right = 762.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(1, 0.31, 0.31, 1)
+theme_override_font_sizes/font_size = 36
+text = "WARNING: BOSS UFO"
+horizontal_alignment = 1

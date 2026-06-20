@@ -1,0 +1,6 @@
+{
+  "[gdscript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "geequlim.godot-tools"
+  }
+}
