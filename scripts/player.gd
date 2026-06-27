@@ -17,6 +17,9 @@ signal hit
 var _shoot_cooldown_left := 0.0
 var _active := true
 var _split_active := false
+var _touch_active := false
+var _touch_x := 0.0
+var _touch_firing := false
 
 
 func _ready() -> void:
@@ -33,17 +36,41 @@ func _process(delta: float) -> void:
 	global_position.y = view_size.y - bottom_margin
 
 	var stick_axis := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-	if absf(stick_axis) > controller_deadzone:
+	if _touch_active:
+		global_position.x = _touch_x
+	elif absf(stick_axis) > controller_deadzone:
 		global_position.x += stick_axis * controller_move_speed * delta
 	global_position.x = clampf(global_position.x, 28.0, view_size.x - 28.0)
 
 	_shoot_cooldown_left = maxf(0.0, _shoot_cooldown_left - delta)
-	if Input.is_action_pressed("player_fire") and _shoot_cooldown_left <= 0.0:
+	if (Input.is_action_pressed("player_fire") or _touch_firing) and _shoot_cooldown_left <= 0.0:
 		_shoot_cooldown_left = shoot_cooldown
 		_rumble_connected_gamepads(fire_rumble_weak, fire_rumble_strong, fire_rumble_duration)
 		emit_signal("shoot_requested", global_position + Vector2(0.0, -20.0))
 
 	queue_redraw()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _active:
+		return
+
+	if event is InputEventScreenTouch:
+		var touch_event := event as InputEventScreenTouch
+		if touch_event.pressed:
+			_touch_active = true
+			_touch_firing = true
+			_touch_x = touch_event.position.x
+		else:
+			_touch_active = false
+			_touch_firing = false
+		return
+
+	if event is InputEventScreenDrag:
+		var drag_event := event as InputEventScreenDrag
+		_touch_active = true
+		_touch_x = drag_event.position.x
+		_touch_firing = true
 
 
 func _draw() -> void:
@@ -74,6 +101,9 @@ func set_split_active(is_active: bool) -> void:
 
 func set_active(is_active: bool) -> void:
 	_active = is_active
+	if not is_active:
+		_touch_active = false
+		_touch_firing = false
 
 
 func _draw_ship(offset: Vector2, scale_factor: float) -> void:
